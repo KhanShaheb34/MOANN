@@ -1,18 +1,8 @@
-const Matrix = require("./Matrix");
+const NeuralNet = require("./NN");
 
-let a = new Matrix(3, 3);
-a.randomize();
-console.log("A randomization done");
-a.print();
+const input = [0, 1];
 
-let b = new Matrix(3, 3);
-b.randomize();
-console.log("B randomization done");
-b.print();
+const NN = new NeuralNet(2, 2, 1);
 
-let c = Matrix.multiply(a, b);
-console.log("Done");
-
-c.print();
-a.print();
-b.print();
+const output = NN.feedForward(input);
+console.table(output.data);
