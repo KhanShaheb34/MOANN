@@ -75,6 +75,17 @@ class Matrix {
     }
   };
 
+  toArray() {
+    let arr = [];
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols; j++) {
+        arr.push(this.data[i][j]);
+      }
+    }
+
+    return arr;
+  }
+
   static fromArray(arr) {
     let m = new Matrix(arr.length, 1);
     for (let i = 0; i < m.rows; i++) {

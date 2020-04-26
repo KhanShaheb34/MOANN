@@ -37,7 +37,7 @@ class NeuralNetwork {
     // Activation
     output.map(sigmoid);
 
-    return output;
+    return output.toArray();
   }
 }
 
