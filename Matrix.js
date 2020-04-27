@@ -13,27 +13,16 @@ class Matrix {
   }
 
   randomize = () => {
-    for (let i = 0; i < this.rows; i++) {
-      this.data[i] = [];
-      for (let j = 0; j < this.cols; j++) {
-        this.data[i][j] = Math.floor(Math.random() * 2 - 1);
-      }
-    }
+    this.map((val) => Math.floor(Math.random() * 2 - 1));
   };
 
   add = (n) => {
     if (n instanceof Matrix && n.rows == this.rows && n.cols == this.cols) {
-      for (let i = 0; i < this.rows; i++) {
-        for (let j = 0; j < this.cols; j++) {
-          this.data[i][j] += n.data[i][j];
-        }
-      }
+      n.map((val, i, j) => {
+        this.data[i][j] += val;
+      });
     } else if (!(n instanceof Matrix)) {
-      for (let i = 0; i < this.rows; i++) {
-        for (let j = 0; j < this.cols; j++) {
-          this.data[i][j] += n;
-        }
-      }
+      this.map((val) => val + n);
     }
   };
 
@@ -41,25 +30,19 @@ class Matrix {
     if (n instanceof Matrix && this.cols == n.rows) {
       let result = new Matrix(this.rows, n.cols);
 
-      for (let i = 0; i < result.rows; i++) {
-        for (let j = 0; j < result.cols; j++) {
-          let sum = 0;
-          for (let k = 0; k < this.cols; k++) {
-            sum += this.data[i][k] * n.data[k][j];
-          }
-          result.data[i][j] = sum;
+      result.map((val, i, j) => {
+        let sum = 0;
+        for (let k = 0; k < this.cols; k++) {
+          sum += this.data[i][k] * n.data[k][j];
         }
-      }
+        return sum;
+      });
 
       this.rows = result.rows;
       this.cols = result.cols;
       this.data = result.data;
     } else if (!(n instanceof Matrix)) {
-      for (let i = 0; i < this.rows; i++) {
-        for (let j = 0; j < this.cols; j++) {
-          this.data[i][j] *= n;
-        }
-      }
+      this.map((val) => val * n);
     }
   }
 
@@ -77,12 +60,9 @@ class Matrix {
 
   toArray() {
     let arr = [];
-    for (let i = 0; i < this.rows; i++) {
-      for (let j = 0; j < this.cols; j++) {
-        arr.push(this.data[i][j]);
-      }
-    }
-
+    this.map((val) => {
+      arr.push(val);
+    });
     return arr;
   }
 
@@ -123,4 +103,4 @@ class Matrix {
   };
 }
 
-module.exports = Matrix;
+if (module !== "undefined") module.exports = Matrix;
