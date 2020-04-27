@@ -41,4 +41,4 @@ class NeuralNetwork {
   }
 }
 
-if (module !== "undefined") module.exports = NeuralNetwork;
+if (typeof module !== "undefined") module.exports = NeuralNetwork;
