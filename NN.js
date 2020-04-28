@@ -4,7 +4,7 @@ const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 const dsigmoid = (x) => x * (1 - x);
 
 class NeuralNetwork {
-  constructor(input_nodes, hidden_nodes, output_nodes) {
+  constructor(input_nodes, hidden_nodes, output_nodes, learning_rate = 0.01) {
     this.input_nodes = input_nodes;
     this.hidden_nodes = hidden_nodes;
     this.output_nodes = output_nodes;
@@ -19,7 +19,7 @@ class NeuralNetwork {
     this.hidden_bias.randomize();
     this.output_bias.randomize();
 
-    this.learning_rate = 0.01;
+    this.learning_rate = learning_rate;
   }
 
   // Feed Forward
