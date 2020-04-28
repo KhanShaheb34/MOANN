@@ -16,5 +16,7 @@ for (let i = 0; i < 100000; i++) {
 }
 
 data.map((el) => {
-  neural_net.predict(el[0], el[1]).print();
+  let output = neural_net.predict(el[0], el[1]).toArray();
+  output > 0.5 ? (output = 1) : (output = 0);
+  console.log(output);
 });

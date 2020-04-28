@@ -27,6 +27,7 @@ class Matrix {
 
   randomize = () => {
     this.map(() => Math.random() * 2 - 1);
+    return this;
   };
 
   add = (n) => {
@@ -35,6 +36,7 @@ class Matrix {
     } else if (!(n instanceof Matrix)) {
       this.map((val) => val + n);
     }
+    return this;
   };
 
   subtract = (n) => {
@@ -43,10 +45,12 @@ class Matrix {
     } else if (!(n instanceof Matrix)) {
       this.map((val) => val - n);
     }
+    return this;
   };
 
   hadamant_multiply(n) {
     this.map((val, i, j) => val * n.data[i][j]);
+    return this;
   }
 
   multiply(n) {
@@ -67,10 +71,12 @@ class Matrix {
     } else if (!(n instanceof Matrix)) {
       this.map((val) => val * n);
     }
+    return this;
   }
 
   print = () => {
     console.table(this.data);
+    return this;
   };
 
   map = (fn) => {
@@ -79,6 +85,7 @@ class Matrix {
         this.data[i][j] = fn(this.data[i][j], i, j);
       }
     }
+    return this;
   };
 
   toArray() {
@@ -94,66 +101,45 @@ class Matrix {
   }
 
   static fromArray(arr) {
-    let m = new Matrix(arr.length, 1);
-    for (let i = 0; i < m.rows; i++) {
-      m.data[i][0] = arr[i];
-    }
-    return m;
+    return new Matrix(arr.length, 1).map((val, i, j) => arr[i]);
   }
 
   static randomize = (rows, cols) => {
-    let random = new Matrix(rows, cols);
-    random.randomize();
-    return random;
+    return new Matrix(rows, cols).randomize();
   };
 
   static add = (m1, m2) => {
-    let result = new Matrix(m1.rows, m1.cols);
-    result.add(m1);
-    result.add(m2);
-    return result;
+    return new Matrix(m1).add(m2);
   };
 
   static subtract = (m1, m2) => {
-    let result = new Matrix(m1.rows, m1.cols);
-    result.add(m1);
-    result.subtract(m2);
-    return result;
+    return new Matrix(m1).subtract(m2);
   };
 
   static hadamant_multiply = (m1, m2) => {
-    let result = new Matrix(m1.rows, m1.cols);
-    result.add(m1);
-    result.hadamant_multiply(m2);
-    return result;
+    return new Matrix(m1).hadamant_multiply(m2);
   };
 
   static multiply = (m1, m2) => {
-    let result = new Matrix(m1.rows, m2.cols);
-    result.map((_, i, j) => {
+    return new Matrix(m1.rows, m2.cols).map((_, i, j) => {
       let sum = 0;
       for (let k = 0; k < m1.cols; k++) {
         sum += m1.data[i][k] * m2.data[k][j];
       }
       return sum;
     });
-    return result;
   };
 
-  static print = (matrix) => {
-    matrix.print();
+  static print = (m) => {
+    m.print();
   };
 
   static transpose(m) {
-    const result = new Matrix(m.cols, m.rows);
-    result.map((_, i, j) => m.data[j][i]);
-    return result;
+    return new Matrix(m.cols, m.rows).map((_, i, j) => m.data[j][i]);
   }
 
   static map = (m, fn) => {
-    let result = new Matrix(m);
-    result.map(fn);
-    return result;
+    return new Matrix(m).map(fn);
   };
 
   static copy(m) {
