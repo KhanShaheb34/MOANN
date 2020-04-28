@@ -3,9 +3,11 @@ class Bird {
     this.x = 50;
     this.y = height / 2;
 
-    this.gravity = 1;
+    this.gravity = 1.2;
     this.velocity = 0;
     this.lift = -25;
+
+    this.brain = new NeuralNetwork(4, 8, 1);
   }
 
   show = () => {
@@ -17,12 +19,36 @@ class Bird {
   update = () => {
     this.velocity += this.gravity;
     this.velocity *= 0.9;
-    this.y += this.velocity;
 
-    if (this.y > height) {
-      this.y = height;
-      this.velocity = 0;
+    this.y += this.velocity;
+  };
+
+  offscreen = () => {
+    return this.y > height || this.y < 0;
+  };
+
+  think = (pipes) => {
+    let closest_pipe = pipes[0];
+    for (let pipe of pipes) {
+      if (pipe.x < closest_pipe.x && pipe.x - pipe.w > this.x) {
+        closest_pipe = pipe;
+      }
     }
+
+    let input_array = [];
+    input_array[0] = map(this.y, 0, height, 0, 1);
+    input_array[1] = map(this.velocity, -30, 30, 0, 1);
+    input_array[2] = map(closest_pipe.x, 0, width, 0, 1);
+    input_array[3] = map(
+      closest_pipe.top + closest_pipe.gorto / 2,
+      0,
+      height,
+      0,
+      1
+    );
+
+    let output = this.brain.predict(input_array).toArray();
+    if (output[0] > 0.5) this.fly();
   };
 
   fly = () => {

@@ -1,13 +1,14 @@
 let nn;
-let bird;
+let birds = [];
+let dead_birds = [];
 let pipes = [];
-score = 0;
-highscore = 0;
+let score = 0;
+let highscore = 0;
+let bird_count = 1000;
 
 function setup() {
   createCanvas(800, 600);
-  bird = new Bird();
-  pipes.push(new Pipe());
+  new_game();
 }
 
 function draw() {
@@ -28,18 +29,27 @@ function draw() {
       pipes.splice(i, 1);
     }
 
-    if (pipes[i].hits(bird)) {
-      background(255, 0, 0, 50);
-      score = 0;
+    for (let j = birds.length - 1; j >= 0; j--) {
+      if (pipes[i].hits(birds[j]) || birds[j].offscreen()) {
+        dead_birds.push(birds[j]);
+        birds.splice(j, 1);
+      }
     }
+  }
+
+  if (birds.length == 0) {
+    new_game();
   }
 
   // Drawing
   for (const pipe of pipes) {
     pipe.show();
   }
-  bird.update();
-  bird.show();
+  for (const bird of birds) {
+    bird.think(pipes);
+    bird.update();
+    bird.show();
+  }
 
   textSize(20);
   text(`Score: ${score}`, 10, 10, 200, 200);
@@ -50,4 +60,14 @@ function keyPressed() {
   if (key == " ") {
     bird.fly();
   }
+}
+
+function new_game() {
+  pipes = [];
+  for (let i = 0; i < bird_count; i++) {
+    birds.push(new Bird());
+  }
+  pipes.push(new Pipe());
+  score = 0;
+  frameCount = 0;
 }

@@ -1,8 +1,8 @@
 class Pipe {
   constructor() {
-    this.w = 50;
+    this.w = 60;
     this.x = width;
-    this.gorto = 180;
+    this.gorto = 150;
     this.y = random(this.gorto, height);
     this.speed = 5;
     this.top = this.y - this.gorto;

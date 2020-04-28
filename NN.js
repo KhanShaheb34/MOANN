@@ -1,4 +1,4 @@
-const Matrix = require("./Matrix");
+// const Matrix = require("./Matrix");
 
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 const dsigmoid = (x) => x * (1 - x);
