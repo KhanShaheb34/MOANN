@@ -1,3 +1,13 @@
+function mutate(x) {
+  if (random(1) < 0.1) {
+    let offset = randomGaussian() * 0.5;
+    let newx = x + offset;
+    return newx;
+  } else {
+    return x;
+  }
+}
+
 class Bird {
   constructor() {
     this.x = 50;
@@ -8,7 +18,16 @@ class Bird {
     this.lift = -25;
 
     this.brain = new NeuralNetwork(4, 8, 1);
+    this.lifespan = 0;
+    this.fitness = 0;
   }
+
+  copy = () => {
+    let newBird = new Bird();
+    newBird.brain = this.brain;
+    newBird.brain.mutate(mutate);
+    return newBird;
+  };
 
   show = () => {
     fill(248, 242, 32);
@@ -19,8 +38,8 @@ class Bird {
   update = () => {
     this.velocity += this.gravity;
     this.velocity *= 0.9;
-
     this.y += this.velocity;
+    this.lifespan++;
   };
 
   offscreen = () => {

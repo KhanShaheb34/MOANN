@@ -93,6 +93,13 @@ class NeuralNetwork {
     this.ih_weights.add(delta_ih_weights);
     this.hidden_bias.add(hidden_gradiant);
   }
+
+  mutate(fn) {
+    this.hidden_bias.map(fn);
+    this.output_bias.map(fn);
+    this.ho_weights.map(fn);
+    this.ih_weights.map(fn);
+  }
 }
 
 if (typeof module !== "undefined") module.exports = NeuralNetwork;

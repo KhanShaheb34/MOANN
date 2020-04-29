@@ -4,10 +4,12 @@ let dead_birds = [];
 let pipes = [];
 let score = 0;
 let highscore = 0;
-let bird_count = 1000;
+let bird_count = 300;
 
 function setup() {
   createCanvas(800, 600);
+  for (let i = 0; i < bird_count; i++) birds.push(new Bird());
+  pipes.push(new Pipe());
   new_game();
 }
 
@@ -38,36 +40,30 @@ function draw() {
   }
 
   if (birds.length == 0) {
-    new_game();
+    nextGen();
   }
 
   // Drawing
   for (const pipe of pipes) {
     pipe.show();
   }
+  let best_bird = birds[0];
   for (const bird of birds) {
+    if (bird.lifespan > best_bird) best_bird = bird;
     bird.think(pipes);
     bird.update();
     bird.show();
   }
+
+  console.log(best_bird.lifespan);
 
   textSize(20);
   text(`Score: ${score}`, 10, 10, 200, 200);
   text(`Highscore: ${highscore}`, 10, 35, 200, 200);
 }
 
-function keyPressed() {
-  if (key == " ") {
-    bird.fly();
-  }
-}
-
-function new_game() {
-  pipes = [];
-  for (let i = 0; i < bird_count; i++) {
-    birds.push(new Bird());
-  }
-  pipes.push(new Pipe());
-  score = 0;
-  frameCount = 0;
-}
+// function keyPressed() {
+//   if (key == " ") {
+//     bird.fly();
+//   }
+// }
