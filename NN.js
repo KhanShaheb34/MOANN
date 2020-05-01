@@ -1,9 +1,19 @@
-// const Matrix = require("./Matrix");
+const Matrix = require("./Matrix");
 
 const sigmoid = (x) => 1 / (1 + Math.exp(-x));
 const dsigmoid = (x) => x * (1 - x);
 
+/**
+ * A simple neural network class which has a input node, output node and only one hidden node.
+ */
 class NeuralNetwork {
+  /**
+   * A simple neural network class which has a input node, output node and only one hidden node.
+   * @param {Number} input_nodes
+   * @param {Number} hidden_nodes
+   * @param {Number} output_nodes
+   * @param {Number} learning_rate
+   */
   constructor(input_nodes, hidden_nodes, output_nodes, learning_rate = 0.01) {
     this.input_nodes = input_nodes;
     this.hidden_nodes = hidden_nodes;
@@ -22,7 +32,11 @@ class NeuralNetwork {
     this.learning_rate = learning_rate;
   }
 
-  // Feed Forward
+  /**
+   * Feed forward the neural network with the input array
+   * @param {[Number]} input_array
+   * @returns {Matrix} Output Matrix
+   */
   predict(input_array) {
     // Calculate hidden layer
     let inputs = Matrix.fromArray(input_array);
@@ -42,7 +56,11 @@ class NeuralNetwork {
     return output;
   }
 
-  // Backpropagation
+  /**
+   * Backpropagate the error and fix the wights and biases of the neural net
+   * @param {[Number]} input_array
+   * @param {[Number]} target_array
+   */
   train(input_array, target_array) {
     // Calculate hidden layer
     let inputs = Matrix.fromArray(input_array);
@@ -94,6 +112,10 @@ class NeuralNetwork {
     this.hidden_bias.add(hidden_gradiant);
   }
 
+  /**
+   * Mutate every value of the weights and biases of the Neural Network.
+   * @param {Function} fn
+   */
   mutate(fn) {
     this.hidden_bias.map(fn);
     this.output_bias.map(fn);
